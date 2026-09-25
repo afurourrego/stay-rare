@@ -1,0 +1,46 @@
+/* Trusted runtime styling (loaded by the FriendSDK CLI into the runtime page, outside the game sandbox).
+   Layout: fill the window at 3:2 on the rarefriends.com paper background.
+   Look: the runtime's own frame and menus in Stay Rare's 1-bit style. Only CSS — every wallet, Friend and
+   confirmation control stays the SDK's own, with its text and behavior. */
+@font-face { font-family: 'Silkscreen'; src: url('./fonts/silkscreen-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+:root { --rf-game-max-width: min(100vw, calc(100vh * 1.5 - 6px)); }
+html, body { background: #eee; }
+body { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+#root { width: 100%; }
+
+/* Home: before a Friend is chosen the game is not loaded yet, so the runtime frame itself becomes the title screen:
+   an attract-mode loop of real gameplay (home.webp, 480×320, 6 s, tools/home-webp.py; still home.png under reduced motion), pixel-sharp,
+   with the pixel logo (logo.png, 64×13, tools/logo.py) on top at a whole-number scale. */
+.rf-game-frame:not(:has(iframe)) { background: #eee url('./home.webp') center / 100% 100% no-repeat; image-rendering: pixelated; }
+@media (prefers-reduced-motion: reduce) { .rf-game-frame:not(:has(iframe)) { background-image: url('./home.png'); } }
+.rf-game-frame:not(:has(iframe))::before,
+.rf-game-frame:not(:has(iframe))::after { position: absolute; z-index: 31; left: 0; right: 0; margin: 0 auto; width: fit-content; pointer-events: none; font-family: Silkscreen, monospace; font-weight: 400; }
+.rf-game-frame:not(:has(iframe))::before { content: ''; top: 6%; width: 56cqw; width: round(down, 56cqw, 64px); aspect-ratio: 64 / 13; background: url('./logo.png') center / 100% 100% no-repeat; image-rendering: pixelated; }
+.rf-game-frame:not(:has(iframe))::after { content: 'Survive the static. Stay rare.'; top: calc(6% + 11.5cqw); font-size: clamp(10px, 1.7cqw, 17px); padding: .3em .6em; background: #eee; border: 2px solid #111; }
+.rf-game-frame:not(:has(iframe)) .rf-frame-scrim { background: #eeeeee4d; place-items: end center; padding: 0 20px 64px; }
+.rf-game-frame:not(:has(iframe)) .rf-frame-menu { max-width: 560px; }
+.rf-game-frame:not(:has(iframe)) .rf-runtime-status { inset: auto 0 72px; width: fit-content; max-width: 90%; margin: 0 auto; padding: .5em .9em; background: #eee; border: 2px solid #111; box-shadow: 4px 4px 0 #111; font-family: Silkscreen, monospace; font-size: 12px; }
+
+/* Every runtime menu (Friend picker, Buy run / Use run / Redeem confirmations) as a Stay Rare terminal. */
+.rf-game-frame .rf-frame-menu { border: 3px solid #111; box-shadow: 6px 6px 0 #111; background: #eee; }
+.rf-game-frame .rf-frame-menu-heading { background: #111; color: #eee; border-bottom: 0; }
+.rf-game-frame .rf-frame-menu-heading h2 { font-family: Silkscreen, monospace; font-weight: 400; font-size: 15px; letter-spacing: .05em; }
+.rf-game-frame .rf-frame-menu-heading h2::before { content: '> '; color: #cf0; }
+.rf-game-frame .rf-frame-menu button { font-family: Silkscreen, monospace; font-size: 12px; border: 2px solid #111; background: #eee; color: #111; box-shadow: 2px 2px 0 #111; }
+.rf-game-frame .rf-frame-menu button:hover:not(:disabled), .rf-game-frame .rf-frame-menu button:focus-visible { background: #cf0; }
+.rf-game-frame .rf-frame-menu .rf-frame-primary { background: #111; color: #cf0; }
+.rf-game-frame .rf-frame-menu .rf-frame-primary:hover:not(:disabled) { background: #cf0; color: #111; }
+.rf-game-frame .rf-frame-menu-heading button { background: transparent; color: #eee; border-color: #eee; box-shadow: none; }
+.rf-game-frame .rf-frame-menu-heading button:hover:not(:disabled) { background: #cf0; color: #111; }
+.rf-game-frame .rf-frame-friends button[aria-pressed=true] { background: #cf0; }
+.rf-game-frame .rf-frame-friends small { font-family: ui-monospace, monospace; }
+.rf-game-frame .rf-frame-note { color: #666; }
+
+@container (max-width: 520px) {
+  /* phones: the menu fills the frame, so only the scene and the terminal look remain */
+  .rf-game-frame:not(:has(iframe))::before, .rf-game-frame:not(:has(iframe))::after { display: none; }
+  .rf-game-frame:not(:has(iframe)) .rf-frame-scrim { place-items: center; padding: 6px; }
+  .rf-game-frame:not(:has(iframe)) .rf-runtime-status { bottom: 44px; font-size: 10px; }
+  .rf-game-frame .rf-frame-menu { border-width: 2px; box-shadow: 3px 3px 0 #111; max-width: calc(100% - 4px); }
+  .rf-game-frame .rf-frame-menu-heading h2 { font-size: 12px; }
+}

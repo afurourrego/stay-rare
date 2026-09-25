@@ -1,0 +1,4 @@
+node_modules/
+games/stay-rare/.friendsdk/
+.play-local/
+test-results/

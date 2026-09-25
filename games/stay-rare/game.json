@@ -1,0 +1,9 @@
+{
+  "name": "Stay Rare",
+  "consumable": "Run",
+  "price": "1000000000000000000",
+  "outcomes": [
+    { "name": "Pool entry", "chanceBps": 9900, "reward": "0" },
+    { "name": "Free run", "chanceBps": 100, "reward": "1000000000000000000" }
+  ]
+}
